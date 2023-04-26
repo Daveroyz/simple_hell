@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <string.h>
 
-int multiply (int num1, int num2, float result);
+int multiply(int num1, int num2, long result);
 void prompt(char **arv, char **env);
 
 
