@@ -1,7 +1,25 @@
 #include "myshell.h"
-#include <sys/wait.h>
 
-#define MAX_COMPOUND 20
+/**
+ * _remove - find the index
+ * @v: string
+ * @ch: character
+ *
+ * Return: Index position or total number of characters.
+ */
+
+size_t _remove(const char *v, char ch)
+{
+	size_t i = 0;
+
+	for (; v[i]; i++)
+	{
+		if (v[i] == ch)
+			return (i);
+	}
+	return (i);
+}
+
 /**
  * prompt - Execute a command from terminal.
  *
@@ -11,11 +29,10 @@
 
 void prompt(char **arv, char **env)
 {
-	char *val = NULL;
-	int i, status, j;
+	int status, j;
 	size_t n = 0;
 	ssize_t num_char;
-	char *argv[MAX_COMPOUND];
+	char *argv[MAX_COMPOUND], *val = NULL;
 	pid_t child_pid;
 
 	while (1)
@@ -29,20 +46,14 @@ void prompt(char **arv, char **env)
 			free(val);
 			exit(EXIT_FAILURE);
 		}
-		i = 0;
-		while (val[i])
-		{
-			if (val[i] == '\n')
-				val[i] = 0;
-			i++;
-		}
+
+		val[_remove(val, '\n')] = 0;
 
 		j = 0;
 		argv[0] = strtok(val, " ");
 		while (argv[j] != NULL)
 		{
-			j++;
-			argv[j] = strtok(NULL, " ");
+			argv[++j] = strtok(NULL, " ");
 		}
 		child_pid = fork();
 		if (child_pid == -1)
